@@ -1,0 +1,284 @@
+SQL> spool
+currently spooling to C:\Users\Briana\Documents\sql\intro.txt
+SQL> select * from cat;
+
+no rows selected
+
+SQL> grant connect, resource, create synonym, create procedure, create trigger, create view. crate sequence to c
+  2  ##Briana;
+SP2-0042: unknown command "#Briana" - rest of line ignored.
+  2  grant connect, resource, create synonym, create procedure, create trigger, create view. crate sequence to c##Briana;
+grant connect, resource, create synonym, create procedure, create trigger, create view. crate sequence to c
+                                                                                      *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege 
+
+
+SQL> grant connect, resource, create synonym, create procedure, create trigger, create view, create sequence to c##Briana;
+grant connect, resource, create synonym, create procedure, create trigger, create view, create sequence to c##Briana
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> connect c##System
+ERROR:
+ORA-01017: invalid username/password; logon denied 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> connect System
+Connected.
+SQL> grant connect, resource, create synonym, create procedure, create trigger, create view, create sequence to c##Briana;
+
+Grant succeeded.
+
+SQL> connect c##Briana
+Connected.
+SQL> --to check the current user system privileges
+SQL> select * from user_sys_privs;
+
+USERNAME                                                                        
+--------------------------------------------------------------------------------
+PRIVILEGE                                ADM COM INH                            
+---------------------------------------- --- --- ---                            
+C##BRIANA                                                                       
+CREATE SYNONYM                           NO  NO  NO                             
+                                                                                
+C##BRIANA                                                                       
+CREATE PROCEDURE                         NO  NO  NO                             
+                                                                                
+C##BRIANA                                                                       
+CREATE VIEW                              NO  NO  NO                             
+                                                                                
+
+USERNAME                                                                        
+--------------------------------------------------------------------------------
+PRIVILEGE                                ADM COM INH                            
+---------------------------------------- --- --- ---                            
+C##BRIANA                                                                       
+CREATE TRIGGER                           NO  NO  NO                             
+                                                                                
+C##BRIANA                                                                       
+CREATE SEQUENCE                          NO  NO  NO                             
+                                                                                
+
+SQL> create table teams(
+  2  tid number(6) primary key,
+  3  tname char(15) not null,
+  4  leaguestatus char(25));
+
+Table created.
+
+SQL> insert into teams values(111, 'Football', 'Division One');
+
+1 row created.
+
+SQL> insert into teams values(112, 'Cricket', 'Premier League');
+
+1 row created.
+
+SQL> insert into teams values(113, 'Football', 'Champions League');
+
+1 row created.
+
+SQL> select * from teams;
+
+       TID TNAME           LEAGUESTATUS                                         
+---------- --------------- -------------------------                            
+       111 Football        Division One                                         
+       112 Cricket         Premier League                                       
+       113 Football        Champions League                                     
+
+SQL> create table students (
+  2  sid number (8) primary key;
+sid number (8) primary key
+                         *
+ERROR at line 2:
+ORA-00907: missing right parenthesis 
+
+
+SQL> create table students (
+  2  sid number (8) primary key,
+  3  sname char (25) not null,
+  4  sphone number(14) unique.
+  5  ;
+sphone number(14) unique.
+                        *
+ERROR at line 4:
+ORA-00907: missing right parenthesis 
+
+
+SQL> create table students (
+  2  sid number (8) primary key;
+sid number (8) primary key
+                         *
+ERROR at line 2:
+ORA-00907: missing right parenthesis 
+
+
+SQL> create table students (
+  2  sid number (8) primary key,
+  3  sname char (25) not null,
+  4  sphone number(14) unique,
+  5  );
+)
+*
+ERROR at line 5:
+ORA-00904: : invalid identifier 
+
+
+SQL> create table students(
+  2    sid number(8) primary key,
+  3    sname char(25) not null,
+  4    sphone char(15) unique,
+  5    tid number(6) references treams on delete set null
+  6    );
+  tid number(6) references treams on delete set null
+                           *
+ERROR at line 5:
+ORA-00942: table or view does not exist 
+
+
+SQL> create table students(
+  2    sid number(8) primary key,
+  3    sname char(25) not null,
+  4    sphone char(15) unique,
+  5    tid number(6) references treams on delete set null
+  6  
+SQL> 
+SQL> select * from students
+  2  ;
+select * from students
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> create table students(
+  2    sid number(8) primary key,
+  3    sname char(25) not null,
+  4    sphone char(15) unique,
+  5    tid number(6) references teams on delete set null
+  6    );
+
+Table created.
+
+SQL> insert into students values(665436, "Briana Nzivu", '0901270112', 111);
+insert into students values(665436, "Briana Nzivu", '0901270112', 111)
+                                    *
+ERROR at line 1:
+ORA-00984: column not allowed here 
+
+
+SQL> insert into students values(665436, 'Briana Nzivu', '0901270112', 111);
+
+1 row created.
+
+SQL> insert into students values(666777, 'Nicky John', '0531270112', 111);
+
+1 row created.
+
+SQL> insert into students values(666777, 'Nicky John', '0531270112', 112);
+insert into students values(666777, 'Nicky John', '0531270112', 112)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (C##BRIANA.SYS_C007510) violated 
+
+
+SQL> insert into students values(666587, 'Nicky John', '0531270852', 112);
+
+1 row created.
+
+SQL> select * from students
+  2  ;
+
+       SID SNAME                     SPHONE                 TID                 
+---------- ------------------------- --------------- ----------                 
+    665436 Briana Nzivu              0901270112             111                 
+    666777 Nicky John                0531270112             111                 
+    666587 Nicky John                0531270852             112                 
+
+SQL> select * from studentsinsert into students values(666727, 'Allan Nganga', '01234212', 112);
+select * from studentsinsert into students values(666727, 'Allan Nganga', '01234212', 112)
+                             *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> insert into students values(666727, 'Allan Nganga', '01234212', 112);
+
+1 row created.
+
+SQL> create table coaches (
+  2  cid number (6) primary key,
+  3  cname char (20),
+  4  caddress char (25),
+  5  csalary number (8,2),
+  6  tid number (6) references teams on delete cascade,
+  7  supid number (6));
+
+Table created.
+
+SQL> insert into coaches values (801,'Ghost Mulei', '129, Mavoko', 67210.50, 111, 665847);
+
+1 row created.
+
+SQL> insert into coaches values (805,'Goat Nzivu', '159, Machakos', 177210.50, 113, 665436);
+
+1 row created.
+
+SQL> insert into coaches values (805,'Goat Nzivu', '159, Machakos', 177210.50, 112, 665436);
+insert into coaches values (805,'Goat Nzivu', '159, Machakos', 177210.50, 112, 665436)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (C##BRIANA.SYS_C007513) violated 
+
+
+SQL> insert into coaches values (806,'Glen Nzivu', '189, Machakos', 177210.50, 112, 666777);
+
+1 row created.
+
+SQL> create table dependents(
+  2    cid number(5) references coaches on delete cascade,
+  3    depid number(6) unique,
+  4    fname char(15),
+  5    lname char(15),
+  6    gender char(6),
+  7    primary key(cid, depid));
+
+Table created.
+
+SQL> insert into table dependents (801, 'Bright', 'Son', 'M', 2364);
+insert into table dependents (801, 'Bright', 'Son', 'M', 2364)
+            *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> insert into table dependents (801, 205, 'Bright', 'Son', 'M', 2364);
+insert into table dependents (801, 205, 'Bright', 'Son', 'M', 2364)
+            *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> insert into dependents (801, 205, 'Bright', 'Son', 'M', 2364);
+insert into dependents (801, 205, 'Bright', 'Son', 'M', 2364)
+                        *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> insert into dependents (801, 'Bright', 'Son', 'M', 2364);
+insert into dependents (801, 'Bright', 'Son', 'M', 2364)
+                        *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> commit;
+
+Commit complete.
+
+SQL> exit
